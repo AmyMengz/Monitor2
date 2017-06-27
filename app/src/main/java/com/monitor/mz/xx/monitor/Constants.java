@@ -15,4 +15,13 @@ public class Constants {
     public static final int defaultIntervalRead = 1000;
     public static final int defaultIntervalUpdate = 1000;
     public static final int defaultIntervalWidth = 1;
+
+
+    public static final String readThread = "readThread";
+
+    public static final String pFinalValue = "finalValue";
+    public static final String pTPD = "pPTD";
+
+
+
 }
