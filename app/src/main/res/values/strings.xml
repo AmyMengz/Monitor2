@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Monitor</string>
+    <string name="w_main_processes">Processes</string>
+    <string name="w_main_remove_all">Remove All</string>
+    <string name="w_main_memory">Memory</string>
+    <string name="cd_paramter_status_icon">Parameter status icon</string>
+    <string name="p_cputotalusage">Total CPU usage</string>
+    <string name="p_kb">- kB</string>
+    <string name="p_percentage">-%</string>
+    <string name="p_cpuusage">CPU Usage</string>
+    <string name="p_cpuanothermonitor">AnotherMonitor</string>
+    <string name="p_memtotal">Memory</string>
+    <string name="p_memused">Mem used</string>
+    <string name="p_memavailable">Mem available</string>
+    <string name="p_memfree">MemFree</string>
+    <string name="p_cached">Cached</string>
+    <string name="p_threshold">Threshold</string>
+    <string name="about_title">About</string>
+
+    <string name="w_main_choose_process">Choose other process(es)</string>
+
+    <string name="w_main_hide">Hide</string>
+
+
+
+
+
+</resources>

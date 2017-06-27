@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:id="@+id/LPraent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/GrayMyPlaces"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/LTopBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bgTopBar"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="2dp"
+            android:paddingLeft="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="@string/app_name"
+                android:textColor="@color/White"
+                android:textSize="@dimen/title_text_size" />
+
+            <ImageView
+                android:id="@+id/LButtonRecord"
+                android:layout_width="40dp"
+                android:layout_height="56dp"
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp"
+                android:src="@drawable/button_start_record" />
+
+            <ImageView
+                android:id="@+id/LButtonMenu"
+                android:layout_width="54dp"
+                android:layout_height="56dp"
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="6dp"
+                android:paddingRight="12dp"
+                android:src="@drawable/button_menu" />
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/bgTopBarUnderline" />
+
+        <LinearLayout
+            style="@style/MainWinodwArrangement"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fillViewport="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingTop="15dp">
+
+                        <LinearLayout
+                            style="@style/ParameterRow"
+                            android:layout_height="45dp"
+                            android:layout_marginBottom="5dp"
+                           >
+
+                            <TextView
+                                style="@style/FirstColumn"
+                                android:layout_marginLeft="0dp"
+                                android:maxLines="1"
+                                android:text="@string/w_main_processes"
+                                android:textColor="@color/shadow"
+                                android:textSize="22sp"
+                                android:textStyle="bold" />
+
+                            <Button
+                                android:id="@+id/BRemoveAll"
+                                android:layout_width="90dp"
+                                android:layout_height="35dp"
+                                android:includeFontPadding="false"
+                                android:maxLines="1"
+                                android:text="@string/w_main_remove_all"
+                                android:textAllCaps="false"
+                                android:textSize="12sp"
+                                android:visibility="gone" />
+
+                            <Button
+                                android:id="@+id/BMemory"
+                                android:layout_width="90dp"
+                                android:layout_height="34dp"
+                                android:includeFontPadding="false"
+                                android:maxLines="1"
+                                android:text="@string/w_main_memory"
+                                android:textAllCaps="false"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/LCPUTotal"
+                            style="@style/ParameterRow"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:id="@+id/IVCPUTotalPS"
+                                style="@style/ParameterStatusIcon" />
+
+                            <TextView
+                                style="@style/FirstColumn"
+                                android:text="@string/p_cputotalusage"
+                                android:textColor="@color/process1" />
+
+                            <TextView
+                                android:id="@+id/TVCPUTotalP"
+                                style="@style/SecondColumn"
+                                android:text="@string/p_percentage"
+                                android:textColor="@color/process1" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/LCPUAM"
+                            style="@style/ParameterRow">
+
+                            <ImageView
+                                android:id="@+id/IVCPUAMPS"
+                                style="@style/ParameterStatusIcon" />
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_marginLeft="10dp"
+                                android:src="@drawable/icon" />
+
+                            <LinearLayout
+                                style="@style/FirstColumn"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/p_cpuanothermonitor"
+                                    android:textColor="@color/process2"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/VeryDarkGray"
+                                    android:textSize="13sp" />
+
+                            </LinearLayout>
+                            <LinearLayout
+                                style="@style/SecondColumn"
+                                android:orientation="vertical"  >
+
+                                <TextView
+                                    android:id="@+id/TVCPUAMP"
+                                    android:layout_width="55dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="bottom|right"
+                                    android:gravity="right"
+                                    android:textSize="16sp"
+                                    android:textColor="@color/process2"
+                                    android:text="@string/p_percentage" />
+
+                                <TextView
+                                    android:id="@+id/TVMemoryAM"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="right"
+                                    android:textSize="13sp"
+                                    android:textColor="@color/VeryDarkGray" />
+                            </LinearLayout>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/LProcessContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical" />
+                            <Button
+
+                                android:id="@+id/BChooseProcess"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                android:layout_marginBottom="5dp"
+                                android:layout_marginLeft="25dp"
+                                android:layout_marginRight="25dp"
+                                android:paddingBottom="16dp"
+                                android:paddingLeft="16dp"
+                                android:paddingRight="16dp"
+                                android:paddingTop="15dp"
+                                android:text="@string/w_main_choose_process"
+                                android:textSize="18sp"
+                                android:textAllCaps="false" />
+                            <LinearLayout
+                                style="@style/ParameterRow"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="5dp">
+                                <TextView
+                                    style="@style/FirstColumn"
+                                    android:layout_marginLeft="0dp"
+                                    android:text="@string/p_memtotal"
+                                    android:textColor="@color/shadow"
+                                    android:textSize="22sp"
+                                    android:textStyle="bold"
+                                    android:maxLines="1" />
+                                <TextView
+                                    style="@style/SecondColumn"
+                                    android:id="@+id/TVMemTotal"
+                                    android:text="@string/p_percentage"
+                                    android:textColor="@color/shadow"
+                                    android:textSize="22sp"
+                                    android:textStyle="bold" />
+                                <ToggleButton
+                                    android:id="@+id/BHideMemory"
+                                    android:layout_width="55dp"
+                                    android:layout_height="34dp"
+                                    android:layout_marginLeft="5dp"
+                                    android:textOn="@string/w_main_hide"
+                                    android:textOff="@string/w_main_hide"
+                                    android:textSize="12sp"
+                                    android:includeFontPadding="false"
+                                    android:textAllCaps="false" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                style="@style/ParameterRow"
+                                android:id="@+id/LMemUsed" >
+
+                                <ImageView
+                                    style="@style/ParameterStatusIcon"
+                                    android:id="@+id/IVMemUsedS" />
+
+                                <TextView
+                                    style="@style/FirstColumn"
+                                    android:text="@string/p_memused"
+                                    android:textColor="@color/Orange" />
+
+                                <TextView
+                                    style="@style/SecondColumn"
+                                    android:id="@+id/TVMemUsed"
+                                    android:textColor="@color/Orange" />
+
+                                <TextView
+                                    style="@style/ThirdColumn"
+                                    android:id="@+id/TVMemUsedP"
+                                    android:textColor="@color/Orange" />
+                            </LinearLayout>
+                            <LinearLayout
+                                style="@style/ParameterRow"
+                                android:id="@+id/LMemAvailable" >
+
+                                <ImageView
+                                    style="@style/ParameterStatusIcon"
+                                    android:id="@+id/IVMemAvailableS" />
+
+                                <TextView
+                                    style="@style/FirstColumn"
+                                    android:text="@string/p_memavailable"
+                                    android:textColor="@color/Magenta" />
+
+                                <TextView
+                                    style="@style/SecondColumn"
+                                    android:id="@+id/TVMemAvailable"
+                                    android:textColor="@color/Magenta" />
+
+                                <TextView
+                                    style="@style/ThirdColumn"
+                                    android:id="@+id/TVMemAvailableP"
+                                    android:textColor="@color/Magenta" />
+                            </LinearLayout>
+                            <LinearLayout
+                                style="@style/ParameterRow"
+                                android:id="@+id/LMemFree" >
+
+                                <ImageView
+                                    style="@style/ParameterStatusIcon"
+                                    android:id="@+id/IVMemFreeS" />
+
+                                <TextView
+                                    style="@style/FirstColumn"
+                                    android:text="@string/p_memfree"
+                                    android:textColor="@color/brown" />
+
+                                <TextView
+                                    style="@style/SecondColumn"
+                                    android:id="@+id/TVMemFree"
+                                    android:textColor="@color/brown" />
+
+                                <TextView
+                                    style="@style/ThirdColumn"
+                                    android:id="@+id/TVMemFreeP"
+                                    android:textColor="@color/brown" />
+                            </LinearLayout>
+                            <LinearLayout
+                                style="@style/ParameterRow"
+                                android:id="@+id/LCached" >
+
+                                <ImageView
+                                    style="@style/ParameterStatusIcon"
+                                    android:id="@+id/IVCachedS" />
+
+                                <TextView
+                                    style="@style/FirstColumn"
+                                    android:text="@string/p_cached"
+                                    android:textColor="@color/blue" />
+
+                                <TextView
+                                    style="@style/SecondColumn"
+                                    android:id="@+id/TVCached"
+                                    android:textColor="@color/blue" />
+
+                                <TextView
+                                    style="@style/ThirdColumn"
+                                    android:id="@+id/TVCachedP"
+                                    android:textColor="@color/blue" />
+                            </LinearLayout>
+                            <LinearLayout
+                                style="@style/ParameterRow"
+                                android:id="@+id/LThreshold"
+                                android:paddingBottom="16dp" >
+
+                                <ImageView
+                                    style="@style/ParameterStatusIcon"
+                                    android:id="@+id/IVThresholdS" />
+
+                                <TextView
+                                    style="@style/FirstColumn"
+                                    android:text="@string/p_threshold"
+                                    android:textColor="@color/lime" />
+
+                                <TextView
+                                    style="@style/SecondColumn"
+                                    android:id="@+id/TVThreshold"
+                                    android:textColor="@color/lime" />
+
+                                <TextView
+                                    style="@style/ThirdColumn"
+                                    android:id="@+id/TVThresholdP"
+                                    android:textColor="@color/lime" />
+                            </LinearLayout>
+
+                       <!-- </LinearLayout>-->
+
+
+
+
+                    </LinearLayout>
+                </ScrollView>
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <!--<org.anothermonitor.ViewGraphic
+                    android:id="@+id/ANGraphic"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />-->
+
+                <FrameLayout
+                    android:id="@+id/LGraphicButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:alpha="0.3"
+                    android:background="@drawable/button_graphic" />
+
+                <FrameLayout
+                    style="@style/ViewGraphicTopShadow"
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:layout_gravity="top"
+                    android:background="@drawable/gradient_process_top" />
+
+            </FrameLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</merge>
