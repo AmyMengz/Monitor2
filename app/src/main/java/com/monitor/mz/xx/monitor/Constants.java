@@ -45,4 +45,6 @@ public class Constants {
     public static final String kB = "kB";
     public static final String percent = "%";
 
+    public static final String listSelected = "listSelected";
+
 }

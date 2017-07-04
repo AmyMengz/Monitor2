@@ -24,8 +24,10 @@ import com.mz.annotation.InjectUtils;
 import com.mz.annotation.OnClick;
 import com.mz.annotation.ViewInject;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Map;
 
 @ContentViewInject(R.layout.activity_main)
 public class MainActivity extends AppCompatActivity implements
@@ -41,19 +43,15 @@ public class MainActivity extends AppCompatActivity implements
     private Resources res;
     private float density;
     private int orientation;
+    private List<Map<String, Object>> mListSelected;
 
     private Handler mHandler = new Handler();
     @ViewInject(R.id.LTopBar)
     Button mLTopBar;
-
-
     @ViewInject(R.id.BMemory)
     Button mBtnMemory;
-
-
     @ViewInject(R.id.LProcessContainer)
     LinearLayout mLProcessContainer;
-
     @ViewInject(R.id.LCPUTotal)
     LinearLayout mLCPUTotal;
     @ViewInject(R.id.LCPUMY)
@@ -68,18 +66,37 @@ public class MainActivity extends AppCompatActivity implements
     LinearLayout mLCached;
     @ViewInject(R.id.LThreshold)
     LinearLayout mLThreshold;
-
     @ViewInject(R.id.TVCPUTotalP)
     TextView mTVCPUTotalP;
     @ViewInject(R.id.TVCPUAMP)
     TextView mTVCPUAMP;
-
-    @ViewInject(R.id.TVMemoryAM)
-    TextView mTVMemoryAM;
-
+    @ViewInject(R.id.TVMemoryMy)
+    TextView mTVMemoryMy;
     @ViewInject(R.id.TVMemTotal)
     TextView mTVMemTotal;
+    @ViewInject(R.id.TVMemUsed)
+    TextView mTVMemUsed;
+    @ViewInject(R.id.TVMemUsedP)
+    TextView mTVMemUsedP;
+    @ViewInject(R.id.TVMemAvailable)
+    TextView mTVMemAvailable;
+    @ViewInject(R.id.TVMemAvailableP)
+    TextView mTVMemAvailableP;
+    @ViewInject(R.id.TVMemFree)
+    TextView mTVMemFree;
+    @ViewInject(R.id.TVMemFreeP)
+    TextView mTVMemFreeP;
+    @ViewInject(R.id.TVCached)
+    TextView mTVCached;
+    @ViewInject(R.id.TVCachedP)
+    TextView mTVCachedP;
+    @ViewInject(R.id.TVThreshold)
+    TextView mTVThreshold;
+    @ViewInject(R.id.TVThresholdP)
+    TextView mTVThresholdP;
 
+    @ViewInject(R.id.BChooseProcess)
+    Button mBChooseProcess;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,17 +121,18 @@ public class MainActivity extends AppCompatActivity implements
         mLCPUTotal.setTag(Constants.bcpuTotal);
         mLCPUMY.setTag(Constants.bcpuMy);
         mLMemUsed.setTag(Constants.bMemUsed);
-        mTVCPUAMP
+//        mTVCPUAMP
     }
 
     private void setTextLabelCPU(TextView absolute, TextView percent, List<Float> values, @SuppressWarnings("unchecked") List<Integer>... valuesInteger) {
         if (valuesInteger.length == 1) {
             percent.setText(mFormatPercent.format(valuesInteger[0].get(0) * 100 / (float) mRservice.getMemTotal()) + Constants.percent);
-            mTVMemoryAM.setVisibility(View.VISIBLE);
-            mTVMemoryAM.setText(mFormat.format(valuesInteger[0].get(0)) + Constants.kB);
+            mTVMemoryMy.setVisibility(View.VISIBLE);
+            mTVMemoryMy.setText(mFormat.format(valuesInteger[0].get(0)) + Constants.kB);
         } else if (!values.isEmpty()) {
+            float w = values.get(0);
             percent.setText(mFormatPercent.format(values.get(0)) + Constants.percent);
-            mTVMemoryAM.setVisibility(View.INVISIBLE);
+            mTVMemoryMy.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -128,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements
         public void onServiceConnected(ComponentName name, IBinder service) {
             mRservice = ((ReaderService.ReaderServiceBinder)service).getService();
             mTVMemTotal.setText(mFormat.format(mRservice.getMemTotal())+Constants.kB);
-//            mHandler.post();
+            mHandler.post(drawRunnable);
         }
 
         @Override
@@ -140,13 +158,30 @@ public class MainActivity extends AppCompatActivity implements
 
         @Override
         public void run() {
+            mHandler.postDelayed(this,intervalUpdate);
+            if(mRservice !=null){
+                setTextLabelCPU(null,mTVCPUTotalP,mRservice.getCPUTotalP());
+                if (processesMode==Constants.processesModeShowCPU){
+                    setTextLabelCPU(null,mTVCPUAMP,mRservice.getCPUMYP());
+                }else setTextLabelCPU(null, mTVCPUAMP, null, mRservice.getMemoryMy());
+                setTextLabelMemory(mTVMemUsed,mTVMemUsedP,mRservice.getMemUsed());
+                setTextLabelMemory(mTVMemAvailable, mTVMemAvailableP, mRservice.getMemAvailable());
+                setTextLabelMemory(mTVMemFree, mTVMemFreeP, mRservice.getMemFree());
+                setTextLabelMemory(mTVCached, mTVCachedP, mRservice.getCached());
+                setTextLabelMemory(mTVThreshold, mTVThresholdP, mRservice.getThreshold());
+            }
 
         }
     };
-
+    private void setTextLabelMemory(TextView absolute, TextView percent, List<String> values) {
+        if (!values.isEmpty()) {
+            absolute.setText(mFormat.format(Integer.parseInt(values.get(0))) + Constants.kB);
+            percent.setText(mFormatPercent.format(Integer.parseInt(values.get(0)) * 100 / (float) mRservice.getMemTotal()) + Constants.percent);
+        }
+    }
 
     @OnClick({R.id.BMemory,R.id.LCPUTotal,R.id.LCPUMY,R.id.LMemUsed,R.id.LMemAvailable,R.id.LMemFree,
-                R.id.LCached,R.id.LThreshold})
+                R.id.LCached,R.id.LThreshold,R.id.BChooseProcess})
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.BMemory:
@@ -175,6 +210,11 @@ public class MainActivity extends AppCompatActivity implements
                 break;
             case R.id.LThreshold:
 
+                break;
+            case R.id.BChooseProcess:
+                Intent i = new Intent(MainActivity.this, ActivityProcesses.class);
+                i.putExtra(Constants.listSelected, (Serializable) mListSelected);
+                startActivityForResult(i, 1);
                 break;
 
         }

@@ -12,6 +12,7 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.os.Process;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.monitor.mz.xx.monitor.Constants;
@@ -34,8 +35,8 @@ import java.util.Map;
  */
 
 public class ReaderService extends Service {
-    private List<Float> cpuTotal, cpuAM;
-    private List<Integer> memoryAM;
+    private List<Float> cpuTotal, cpuMy;
+    private List<Integer> memoryMy;
     private List<String> memUsed//已用内存
             , memAvailable//可用内存
             , memFree, cached, threshold;
@@ -53,9 +54,9 @@ public class ReaderService extends Service {
     private String s;//读取文件一行
     private String[] sa;
     private long work,//work cpu
-            workAM,
+            workMy,
             totalBefore,
-            totalT, workT, workBefore, workAMBefore, workAMT;
+            totalT, workT, workBefore, workMyBefore, workMyT;
 
     private long total;//cpu total
     private boolean firstRead = true, recording,topRow = true;
@@ -73,8 +74,8 @@ public class ReaderService extends Service {
     public void onCreate() {
         super.onCreate();
         cpuTotal = new ArrayList<Float>(maxSamples);
-        cpuAM = new ArrayList<Float>(maxSamples);
-        memoryAM = new ArrayList<Integer>(maxSamples);
+        cpuMy = new ArrayList<Float>(maxSamples);
+        memoryMy = new ArrayList<Integer>(maxSamples);
         memUsed = new ArrayList<String>(maxSamples);
         memAvailable = new ArrayList<String>(maxSamples);
         memFree = new ArrayList<String>(maxSamples);
@@ -128,14 +129,14 @@ public class ReaderService extends Service {
 //    };
 
     private void read() {
-        try {
+        try {//读内存占用
             reader = new BufferedReader(new FileReader("/proc/meminfo"));
             s = reader.readLine();
             while (s != null) {
                 while (memFree.size() >= maxSamples) {
                     cpuTotal.remove(cpuTotal.size() - 1);
-                    cpuAM.remove(cpuAM.size() - 1);
-                    memoryAM.remove(memoryAM.size() - 1);
+                    cpuMy.remove(cpuMy.size() - 1);
+                    memoryMy.remove(memoryMy.size() - 1);
                     memUsed.remove(memUsed.size() - 1);
                     memAvailable.remove(memAvailable.size() - 1);
                     memFree.remove(memFree.size() - 1);
@@ -176,6 +177,7 @@ public class ReaderService extends Service {
                 s = reader.readLine();
             }
             reader.close();
+
             am.getMemoryInfo(mi);
             if (mi == null) {
                 memUsed.add(0, String.valueOf(0));
@@ -189,18 +191,22 @@ public class ReaderService extends Service {
                 //
                 threshold.add(0, String.valueOf(mi.threshold / 1024));
             }
-            memoryAM.add(amMI[0].getTotalPrivateDirty());
+            memoryMy.add(amMI[0].getTotalPrivateDirty());
+//            总的cpu时间total
+            //CPU时间=user+system+nice+idle+iowait+irq+softirq
             reader = new BufferedReader(new FileReader("proc/stat"));
             sa = reader.readLine().split("[ ]+", 9);
             work = Long.parseLong(sa[1]) + Long.parseLong(sa[2]) + Long.parseLong(sa[3]);
             total = work + Long.parseLong(sa[4]) + Long.parseLong(sa[5]) +
                     Long.parseLong(sa[6]) + Long.parseLong(sa[7]);
             reader.close();
+//          进程的总Cpu时间
             reader = new BufferedReader(new FileReader("/proc/" + pId + "/stat"));
-            sa = reader.readLine().split("[ ]+", 9);
-            workAM = Long.parseLong(sa[13]) + Long.parseLong(sa[14]) +
+            sa = reader.readLine().split("[ ]+", 18);
+            workMy = Long.parseLong(sa[13]) + Long.parseLong(sa[14]) +
                     Long.parseLong(sa[15]) + Long.parseLong(sa[16]);
             reader.close();
+
             if (mListSelected != null && !mListSelected.isEmpty()) {
                 int[] arrayPIds = new int[mListSelected.size()];
                 synchronized (mListSelected) {
@@ -245,9 +251,13 @@ public class ReaderService extends Service {
             if (totalBefore != 0) {
                 totalT = total - totalBefore;
                 workT = work - workBefore;
-                workAMT = workAM - workAMBefore;
+                workMyT = workMy - workMyBefore;
                 cpuTotal.add(0, restrictPercentage(workT * 100 / (float) totalT));
-                cpuAM.add(0, restrictPercentage(workAMT * 100 / (float) totalT));
+                Log.i("MONITOR"," totalT:"+totalT+" total:"+total+" totalBefore:"+totalBefore+
+                        "workT:"+workT+" work: "+work+" workBefore: "+workBefore
+                +"  per:"+(workT * 100 / (float) totalT));
+
+                cpuMy.add(0, restrictPercentage(workMyT * 100 / (float) totalT));
                 if (mListSelected != null && !mListSelected.isEmpty()) {
                     int workPT = 0;
                     List<Float> l;
@@ -272,7 +282,7 @@ public class ReaderService extends Service {
             }
             totalBefore = total;
             workBefore = work;
-            workAMBefore = workAM;
+            workMyBefore = workMy;
 
             if (mListSelected != null && !mListSelected.isEmpty())
                 for (Map<String, Object> p : mListSelected)
@@ -366,10 +376,17 @@ public class ReaderService extends Service {
             return 0;
         else return percentage;
     }
-    List<Float> getCPUTotalP() {
+    public List<Float> getCPUTotalP() {
         return cpuTotal;
     }
 
+    public List<Integer> getMemoryMy() {
+        return memoryMy;
+    }
+
+    public List<String> getMemUsed() {
+        return memUsed;
+    }
 
     public class ReaderServiceBinder extends Binder{
         public ReaderService getService(){
@@ -378,5 +395,22 @@ public class ReaderService extends Service {
     }
     public int getMemTotal(){
         return memTotal;
+    }
+    public List<Float> getCPUMYP() {
+        return cpuMy;
+    }
+    public List<String> getMemAvailable() {
+        return memAvailable;
+    }
+    public List<String> getMemFree() {
+        return memFree;
+    }
+
+    public List<String> getCached() {
+        return cached;
+    }
+
+    public List<String> getThreshold() {
+        return threshold;
     }
 }
