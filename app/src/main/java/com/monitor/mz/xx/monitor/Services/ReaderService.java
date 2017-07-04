@@ -4,6 +4,7 @@ import android.app.ActivityManager;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Binder;
 import android.os.Debug;
 import android.os.Environment;
 import android.os.Handler;
@@ -65,7 +66,7 @@ public class ReaderService extends Service {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        return null;
+        return new ReaderServiceBinder();
     }
 
     @Override
@@ -94,21 +95,37 @@ public class ReaderService extends Service {
 
     }
 
-    private volatile Thread readThread = new Thread();
-    private Runnable readRunnable = new Runnable() {
-        @Override
-        public void run() {
-            Thread thisThread = Thread.currentThread();
-            while (readThread == thisThread) {
-                read();
-                try {
-                    Thread.sleep(intervalRead);
-                } catch (Exception e) {
-                    e.printStackTrace();
+    private volatile Thread readThread =
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Thread thisThread = Thread.currentThread();
+                    while (readThread == thisThread) {
+                        read();
+                        try {
+                            Thread.sleep(intervalRead);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
             }
-        }
-    };
+                    , Constants.readThread);
+            //new Thread(readRunnable,Constants.readThread);
+//    private Runnable readRunnable = new Runnable() {
+//        @Override
+//        public void run() {
+//            Thread thisThread = Thread.currentThread();
+//            while (readThread == thisThread) {
+//                read();
+//                try {
+//                    Thread.sleep(intervalRead);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//    };
 
     private void read() {
         try {
@@ -351,5 +368,15 @@ public class ReaderService extends Service {
     }
     List<Float> getCPUTotalP() {
         return cpuTotal;
+    }
+
+
+    public class ReaderServiceBinder extends Binder{
+        public ReaderService getService(){
+            return ReaderService.this;
+        }
+    }
+    public int getMemTotal(){
+        return memTotal;
     }
 }

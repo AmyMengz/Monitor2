@@ -133,7 +133,7 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/LCPUAM"
+                            android:id="@+id/LCPUMY"
                             style="@style/ParameterRow">
 
                             <ImageView
