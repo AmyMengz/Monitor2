@@ -22,7 +22,7 @@
     <string name="w_main_hide">Hide</string>
     <string name="notify_toast_error_2">It hasn\'t been possible to start recording:</string>
 
-
+    <string name="w_processes_title">Processes</string>
 
 
 </resources>

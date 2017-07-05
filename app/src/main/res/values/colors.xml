@@ -8,6 +8,7 @@
     <color name="bgTopBar">#4db6ac</color>
     <color name="White">#FFFFFF</color>
     <color name="bgTopBarUnderline">#26a69a</color>
+    <color name="bgSettings">#ff5252</color>
     <color name="grayIcon">#cccccccc</color>
     <color name="shadow">#888</color>
     <color name="GrayMyPlacesTop">#44000000</color>
@@ -26,5 +27,7 @@
     <color name="brown">#804000</color>
     <color name="blue">#0000FF</color>
     <color name="lime">#00FF00</color>
+
+
 
 </resources>
