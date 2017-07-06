@@ -41,6 +41,16 @@
                 />
 
         </RelativeLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/bgProcessessUnderline"></FrameLayout>
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/lv_allapp"
+            android:animateLayoutChanges="false"></ListView>
+
     </LinearLayout>
 
 </merge>
