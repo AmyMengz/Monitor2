@@ -1,30 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
-   >
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:background="@color/GrayMyPlaces"
-        >
+        android:orientation="vertical">
+
         <RelativeLayout
             android:id="@+id/LWindowMyPlacesTopBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/bgSettings"
             android:gravity="center_vertical"
             android:paddingLeft="20dp"
-            android:paddingRight="12dp"
-            android:background="@color/bgSettings"
-            >
+            android:paddingRight="12dp">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
                 android:layout_alignParentLeft="true"
                 android:gravity="center_vertical"
+                android:maxLines="1"
                 android:text="@string/w_processes_title"
                 android:textColor="#FFF"
-                android:textSize="22sp"
-                android:maxLines="1"/>
+                android:textSize="22sp" />
+
             <Button
                 android:id="@+id/BOK"
                 android:layout_width="wrap_content"
@@ -36,20 +37,52 @@
                 android:paddingRight="20dp"
                 android:paddingTop="9dp"
                 android:text="ok"
-                android:textSize="18sp"
                 android:textAllCaps="false"
-                />
+                android:textSize="18sp" />
 
         </RelativeLayout>
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="@color/bgProcessessUnderline"></FrameLayout>
+
         <ListView
+            android:id="@+id/lv_allapp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/lv_allapp"
-            android:animateLayoutChanges="false"></ListView>
+            android:animateLayoutChanges="false"
+            />
+
+        <LinearLayout
+            android:id="@+id/LProcessesProblem"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="30dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/TVError"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoLink="all"
+                android:gravity="left|center"
+                android:linksClickable="true"
+                android:paddingBottom="50dp"
+                android:text="@string/w_processes_empty"
+                android:textColor="@color/VeryDarkGray"
+                android:textSize="15sp" />
+        </LinearLayout>
+        <FrameLayout
+            android:id="@+id/LNavigationBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@drawable/gradient_nb"
+            android:visibility="visible" />
+
 
     </LinearLayout>
 

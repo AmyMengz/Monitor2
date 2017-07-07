@@ -18,7 +18,7 @@
     <string name="about_title">About</string>
 
     <string name="w_main_choose_process">Choose other process(es)</string>
-
+    <string name="w_processes_empty">Ouch! There was some problem when retrieving the system processes.</string>
     <string name="w_main_hide">Hide</string>
     <string name="notify_toast_error_2">It hasn\'t been possible to start recording:</string>
 

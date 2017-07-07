@@ -8,6 +8,11 @@ public class Constants {
 
 
     public static final String prefs = "Prefs";
+    public static final String sbh = "status_bar_height";
+    public static final String nbh = "navigation_bar_height";
+    public static final String dimen = "dimen";
+    public static final String android = "android";
+
     public static final String intervalRead = "intervalRead";
     public static final String intervalUpdate = "intervalUpdate";
     public static final String intervalWidth = "intervalWidth";
