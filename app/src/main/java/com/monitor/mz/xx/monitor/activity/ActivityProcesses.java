@@ -9,7 +9,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.PersistableBundle;
+import android.os.Process;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
@@ -22,11 +22,13 @@ import android.widget.SimpleAdapter;
 
 import com.monitor.mz.xx.monitor.Constants;
 import com.monitor.mz.xx.monitor.R;
+import com.monitor.mz.xx.monitor.utils.ProcessManager;
 import com.mz.annotation.ContentViewInject;
 import com.mz.annotation.InjectUtils;
 import com.mz.annotation.ViewInject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -48,10 +50,11 @@ public class ActivityProcesses extends AppCompatActivity {
         }
     };
     @Override
-    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         InjectUtils.injectAll(this);
         final Resources res = getResources();
+
         if(Build.VERSION.SDK_INT>=19){
             float smallScreenWidth = res.getConfiguration().smallestScreenWidthDp,//声明了与你的应用程序兼容的最小的最小宽度
                     sDensity = res.getDisplayMetrics().density;//屏幕密度
@@ -88,7 +91,39 @@ public class ActivityProcesses extends AppCompatActivity {
         } else {
             PackageManager pm = getPackageManager();
             List<ActivityManager.RunningAppProcessInfo> runningAppProcesses;
+            if(Build.VERSION.SDK_INT<22){
+                runningAppProcesses = ((ActivityManager)getSystemService(ACTIVITY_SERVICE))
+                        .getRunningAppProcesses();
+            }else runningAppProcesses= ProcessManager.getRunningAppProcessInfo(this);
+            if(runningAppProcesses!=null){
+                int pid = Process.myPid();
+                for (ActivityManager.RunningAppProcessInfo p:runningAppProcesses){
+                    if(pid !=p.pid){
+                        String name = null;
+                        try{
+                            name = (String)pm.getApplicationLabel(pm.getApplicationInfo(p.pkgList!=null
+                                    &&p.pkgList.length>0?p.pkgList[0]:p.processName,0));
+                        }catch (PackageManager.NameNotFoundException e){
+                        }catch (Resources.NotFoundException e){
+                        }
+                        if(name == null){
+                            name = p.processName;
+                        }
+                        mListProcesses.add(mapDataForPlacesList(false, name, String.valueOf(p.pid),
+                                p.pkgList != null && p.pkgList.length > 0 ? p.pkgList[0] : p.processName, p.processName));
+                    }
+                }
+            }
         }
+    }
+    private Map<String, Object> mapDataForPlacesList(boolean selected, String pAppName, String pid, String pPackage, String pName) {
+        Map<String, Object> entry = new HashMap<String, Object>();
+        entry.put(Constants.pSelected, selected);
+        entry.put(Constants.pAppName, pAppName);
+        entry.put(Constants.pId, pid);
+        entry.put(Constants.pPackage, pPackage);
+        entry.put(Constants.pName, pName);
+        return entry;
     }
 }
 

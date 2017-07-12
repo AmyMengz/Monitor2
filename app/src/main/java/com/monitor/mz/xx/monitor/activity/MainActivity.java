@@ -102,6 +102,7 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         startService(new Intent(this, ReaderService.class));
         InjectUtils.injectAll(this);
+
         sprefUtil = new SprefUtil(getApplicationContext());
         intervalRead = sprefUtil.getInt(Constants.intervalRead,Constants.defaultIntervalUpdate);
         intervalUpdate = sprefUtil.getInt(Constants.intervalUpdate,Constants.defaultIntervalUpdate);

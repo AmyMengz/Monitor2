@@ -53,5 +53,8 @@ public class Constants {
     public static final String listSelected = "listSelected";
     public static final String listProcesses = "listProcesses";
     public static final String pSelected = "pSelected";
+    public static final String pName = "pName";
+    public static final String pPackage = "pPackage";
+    public static final String pAppName = "pAppName";
 
 }
