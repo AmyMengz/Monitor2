@@ -4,9 +4,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
-import com.monitor.mz.xx.monitor.utils.Cgroup;
-import com.monitor.mz.xx.monitor.utils.ProcFile;
-import com.monitor.mz.xx.monitor.utils.Stat;
+import com.monitor.mz.xx.monitor.utils.models.Cgroup;
+import com.monitor.mz.xx.monitor.utils.models.ProcFile;
+import com.monitor.mz.xx.monitor.utils.models.Stat;
 
 import java.io.IOException;
 

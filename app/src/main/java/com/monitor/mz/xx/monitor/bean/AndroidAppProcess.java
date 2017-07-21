@@ -5,8 +5,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Parcel;
 
-import com.monitor.mz.xx.monitor.utils.Cgroup;
-import com.monitor.mz.xx.monitor.utils.ControlGroup;
+import com.monitor.mz.xx.monitor.utils.models.Cgroup;
+import com.monitor.mz.xx.monitor.utils.models.ControlGroup;
 
 import java.io.IOException;
 

@@ -23,6 +23,10 @@
     <string name="notify_toast_error_2">It hasn\'t been possible to start recording:</string>
 
     <string name="w_processes_title">Processes</string>
+    <string name="w_processes_android_51_problem"><big><b>Ouch!</b></big>
+		\n\nFor Android 5.1.1+ the processes list doesn\'t work anymore.
+		It\'s due to an undocumented Android API change. Still trying to find out some workaround.
+		\n\nMore info: http://stackoverflow.com/questions/30619349/android-5-1-1-and-above-getrunningappprocesses-returns-my-application-packag</string>
 
 
 </resources>

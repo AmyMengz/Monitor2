@@ -1,4 +1,4 @@
-package com.monitor.mz.xx.monitor.utils;
+package com.monitor.mz.xx.monitor.utils.models;
 
 import android.os.Parcel;
 

@@ -4,6 +4,7 @@ import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -19,18 +20,25 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import com.monitor.mz.xx.monitor.Constants;
 import com.monitor.mz.xx.monitor.R;
+import com.monitor.mz.xx.monitor.adapter.SimpleAdapterCustomised;
 import com.monitor.mz.xx.monitor.utils.ProcessManager;
 import com.mz.annotation.ContentViewInject;
 import com.mz.annotation.InjectUtils;
 import com.mz.annotation.ViewInject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import static com.monitor.mz.xx.monitor.Constants.pAppName;
 
 /**
  * Created by Administrator on 2017/7/4.
@@ -113,8 +121,42 @@ public class ActivityProcesses extends AppCompatActivity {
                                 p.pkgList != null && p.pkgList.length > 0 ? p.pkgList[0] : p.processName, p.processName));
                     }
                 }
+                Collections.sort(mListProcesses, new Comparator<Map<String, Object>>() {
+                    @Override
+                    public int compare(Map<String, Object> o1, Map<String, Object> o2) {
+                        if(o1.get(pAppName).equals(o2.get(pAppName)))
+                            return 0;
+                        return ((String)o1.get(pAppName)).compareTo((String)o2.get(pAppName))< 0 ? -1 : 1;
+                    }
+                });
+                List<Map<String,Object>> mListSelectedProv = (List<Map<String,Object>>)getIntent().getSerializableExtra(Constants.listSelected);
+                if (mListSelectedProv!=null&&!mListSelectedProv.isEmpty()){
+                    for (Map<String,Object> processSelected:mListSelectedProv){
+                        Iterator<Map<String,Object>> iteratorListProcesses = mListProcesses.iterator();
+                        while (iteratorListProcesses.hasNext()){
+                            Map<String,Object> process = iteratorListProcesses.next();
+                            if(process.get(Constants.pId).equals(processSelected.get(Constants.pId))){
+                                iteratorListProcesses.remove();
+                            }
+                        }
+                    }
+                }
+            }else {
+                mListView.setVisibility(View.GONE);
+                findViewById(R.id.LProcessesProblem).setVisibility(View.VISIBLE);
             }
         }
+        if(mListProcesses==null||mListProcesses.isEmpty()){
+            mListView.setVisibility(View.GONE);
+            findViewById(R.id.LProcessesProblem).setVisibility(View.VISIBLE);
+            ((TextView)findViewById(R.id.TVError)).setText(R.string.w_processes_android_51_problem);
+            findViewById(R.id.BOK).setClickable(false);
+            return;
+        }
+        mAdapter = new SimpleAdapterCustomised(this, mListProcesses, R.layout.activity_processes_entry,
+                new String[] { Constants.pSelected, Constants.pPackage, Constants.pName, Constants.pId },
+                new int[] { R.id.LpBG, R.id.IVpIconBig, R.id.TVpAppName, R.id.TVpName },navigationBarHeight);
+        mListView.setAdapter(mAdapter);
     }
     private Map<String, Object> mapDataForPlacesList(boolean selected, String pAppName, String pid, String pPackage, String pName) {
         Map<String, Object> entry = new HashMap<String, Object>();
@@ -124,6 +166,21 @@ public class ActivityProcesses extends AppCompatActivity {
         entry.put(Constants.pPackage, pPackage);
         entry.put(Constants.pName, pName);
         return entry;
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        registerReceiver(receiverFinish, new IntentFilter(Constants.actionFinishActivity));
+    }
+
+
+
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(receiverFinish);
     }
 }
 

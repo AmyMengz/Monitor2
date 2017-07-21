@@ -28,6 +28,8 @@
     <color name="brown">#804000</color>
     <color name="blue">#0000FF</color>
     <color name="lime">#00FF00</color>
+    <color name="DarkGray">#A9A9A9</color>
+    <color name="bgProcessessSelected">#b2dfdb</color>
 
 
 

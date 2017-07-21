@@ -1,4 +1,4 @@
-package com.monitor.mz.xx.monitor.utils;
+package com.monitor.mz.xx.monitor.utils.models;
 
 import android.os.Parcel;
 
@@ -21,6 +21,10 @@ public class Stat extends ProcFile{
     private Stat(Parcel in){
         super(in);
         this.fields = in.createStringArray();
+    }
+    @Override public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
+        dest.writeStringArray(fields);
     }
     public int getPid(){
         return Integer.parseInt(fields[0]);

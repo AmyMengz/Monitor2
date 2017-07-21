@@ -57,4 +57,6 @@ public class Constants {
     public static final String pPackage = "pPackage";
     public static final String pAppName = "pAppName";
 
+    public static final String actionFinishActivity = "actionCloseActivity";
+
 }

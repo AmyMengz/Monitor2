@@ -18,6 +18,15 @@
         <activity android:name=".activity.ActivityProcesses">
         </activity>
         <service android:name=".Services.ReaderService"></service>
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="YOUR_APP_KEY" />
+        <!--渠道号-->
+        <!--此处使用占位符，然后在build.gradle中动态的替换它-->
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="${UMENG_CHANNEL_VALUE}" />
     </application>
+
 
 </manifest>

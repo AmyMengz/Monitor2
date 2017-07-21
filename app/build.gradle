@@ -17,6 +17,28 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    //添加我们的签名文件配置
+    signingConfigs{
+        //为我们的release包添加签名文件配置
+        myConfigs {
+            storeFile file("donson.keystore")//
+            storePassword "147852"
+            keyAlias "donson"
+            keyPassword "147852"
+        }
+    }
+    productFlavors {
+        mall {}
+        xiaomi {}
+    }
+//        productFlavors.all{
+//            flavor ->
+//                flavor.manifestPlaceholders = [UMNEG_CHANNEL_VALUE:NAME]
+//        }
+    productFlavors.all{
+        flavor -> flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
+    }
+
 }
 
 dependencies {
